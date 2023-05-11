@@ -2,6 +2,19 @@ const { createToken } = require('../auth/authFunctions');
 const { userService } = require('../services');
 const errorMap = require('../utils/errorMap');
 
+const getUsers = async (req, res) => {
+    try {
+    const users = await userService.getUsers();       
+    const results = users.map((result) => {
+    const { password, ...userWithoutPassword } = result.dataValues;
+    return userWithoutPassword;
+});
+    return res.status(200).json(results);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal error' });
+    }
+};
 const createUser = async (req, res) => {
     try {
         const { body } = req;
@@ -18,4 +31,5 @@ const createUser = async (req, res) => {
 
 module.exports = {
     createUser,
+    getUsers,
 };
