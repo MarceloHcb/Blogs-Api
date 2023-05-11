@@ -6,6 +6,7 @@ const getUserByEmail = async (email) => {
 const userEmail = await User.findOne({ where: { email } });   
 return userEmail;
 };
+const getUserById = (id) => User.findByPk(id);
 const createUser = async (newUserbody) => {    
     const error = validationUserFields(newUserbody);
     const existingUser = await User.findOne({ where: { email: newUserbody.email } });    
@@ -19,5 +20,6 @@ const createUser = async (newUserbody) => {
 module.exports = {
     getUsers,
     getUserByEmail,
-    createUser,
+    getUserById,
+    createUser,    
 };
