@@ -6,7 +6,11 @@ const loginUserFields = Joi.object({
   password: Joi.string().min(6).required(),
   image: Joi.string(),
 });
+const nameSchema = Joi.object({
+  name: Joi.string().min(1).required(),
+});
 
 module.exports = {
   loginUserFields,  
+  nameSchema,
 };
