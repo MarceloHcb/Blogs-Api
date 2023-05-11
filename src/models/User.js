@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      display_name: {
+      displayName: {        
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -20,21 +20,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       image: {
-        allowNull: false,
-        type: DataTypes.STRING,
+        allowNull: true,
+        type: DataTypes.STRING,        
       },
     },
     {
-      underscore: true,
+      underscored: true,
       timestamps: false,
       tableName: "users",
     }
   );
-//   User.associate = (models) => {
-//     User.hasMany(models.BlogPost, {
-//       foreingkey: "user_id",
-//       as: "users",
-//     });
-//   };
+
   return User;
 };
