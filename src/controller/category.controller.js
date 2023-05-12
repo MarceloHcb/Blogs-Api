@@ -1,6 +1,16 @@
 const { categoryService } = require('../services');
 const errorMap = require('../utils/errorMap');
-    
+
+const getCategories = async (req, res) => {
+    try {
+        const categories = await categoryService.getCategories();        
+        return res.status(200).json(categories);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'internal error' });
+        }
+};
+
 const createCategory = async (req, res) => {
     try {
         const { type, message } = await categoryService.createCategory(req.body.name);
@@ -13,5 +23,6 @@ const createCategory = async (req, res) => {
 };
 
 module.exports = {
+    getCategories,
     createCategory,
 };

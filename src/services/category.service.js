@@ -1,6 +1,8 @@
 const { Category } = require('../models');
 const { categoryNameValidation } = require('./validations/validationUserFilds');
 
+const getCategories = () => Category.findAll();
+
 const createCategory = async (name) => {
     const error = categoryNameValidation(name);
     if (error.type) return error;
@@ -9,5 +11,6 @@ const createCategory = async (name) => {
 };
 
 module.exports = {
+    getCategories,
     createCategory,
 };
