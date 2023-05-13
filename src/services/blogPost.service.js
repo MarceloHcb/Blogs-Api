@@ -10,6 +10,14 @@ const getBlogPosts = () => BlogPost.findAll({
     attributes: { exclude: ['user_id'] },
 });
 
+const getPostById = (id) => BlogPost.findByPk(id, {
+    include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories' },
+    ],
+    attributes: { exclude: ['user_id'] },
+    });
+
 const createBlogPost = async (userId, newPostBody) => {
         const categories = await Category.findAll();                
         const error = validatePostFields(newPostBody, categories);        
@@ -28,6 +36,7 @@ const createBlogPost = async (userId, newPostBody) => {
     return { type: null, message: dataValues }; 
 };
 module.exports = { 
-    getBlogPosts,   
+    getBlogPosts,
+    getPostById,
     createBlogPost,   
 };
