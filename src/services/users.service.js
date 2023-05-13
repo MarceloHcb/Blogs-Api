@@ -1,5 +1,5 @@
 const { User } = require('../models');
-const { validationUserFields } = require('./validations/validationUserFilds');
+const { validateUserFields } = require('./validations/validateFilds');
 
 const getUsers = () => User.findAll();
 const getUserByEmail = async (email) => {
@@ -8,7 +8,7 @@ return userEmail;
 };
 const getUserById = (id) => User.findByPk(id);
 const createUser = async (newUserbody) => {    
-    const error = validationUserFields(newUserbody);
+    const error = validateUserFields(newUserbody);
     const existingUser = await User.findOne({ where: { email: newUserbody.email } });    
     if (existingUser) {
         return { type: 'DUPLICATE_USER', message: 'User already registered' };

@@ -1,5 +1,5 @@
 const { Category } = require('../models');
-const { categoryNameValidation } = require('./validations/validationUserFilds');
+const { categoryNameValidation } = require('./validations/validateFilds');
 
 const getCategories = () => Category.findAll();
 

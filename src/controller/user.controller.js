@@ -2,7 +2,7 @@ const { createToken } = require('../auth/authFunctions');
 const { userService } = require('../services');
 const errorMap = require('../utils/errorMap');
 
-const getUsers = async (req, res) => {
+const getUsers = async (_req, res) => {
     try {
     const users = await userService.getUsers();       
     const results = users.map((result) => {
