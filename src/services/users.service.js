@@ -1,10 +1,15 @@
 const { User } = require('../models');
 const { validateUserFields } = require('./validations/validateFilds');
 
-const getUsers = () => User.findAll();
+const getUsers = () => User.findAll({
+    attributes: { exclude: ['password'] },
+});
 const getUserByEmail = async (email) => {
-const userEmail = await User.findOne({ where: { email } });   
-return userEmail;
+    const userEmail = await User.findOne({
+    where: { email },
+    attributes: { exclude: ['password'] },
+    });
+    return userEmail;
 };
 const getUserById = (id) => User.findByPk(id);
 const createUser = async (newUserbody) => {    
@@ -14,7 +19,7 @@ const createUser = async (newUserbody) => {
         return { type: 'DUPLICATE_USER', message: 'User already registered' };
     }
     if (error.type) return error;
-    const newUser = await User.create(newUserbody);     
+    const newUser = await User.create(newUserbody);    
     return { type: null, message: newUser };
 };
 module.exports = {

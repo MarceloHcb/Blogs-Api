@@ -1,6 +1,19 @@
 const { blogPostService } = require('../services');
 const errorMap = require('../utils/errorMap');
 
+const getBlogPosts = async (_req, res) => {
+    try {
+    const posts = await blogPostService.getBlogPosts();       
+//     const results = posts.map((result) => {
+//     const { password, ...userWithoutPassword } = result.dataValues;
+//     return userWithoutPassword;
+// });
+    return res.status(200).json(posts);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal error' });
+    }
+};
 const createBlogPost = async (req, res) => {
     try {
         const { id } = req.payload.data;        
@@ -14,5 +27,6 @@ const createBlogPost = async (req, res) => {
 };
 
 module.exports = {
+    getBlogPosts,
     createBlogPost,
 };

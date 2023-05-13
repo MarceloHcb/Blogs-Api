@@ -7,6 +7,7 @@ const { authorization: token } = req.headers;
 if (!token) return res.status(401).json({ message: 'Token not found' });
 const payload = verifyToken(token);
 req.payload = payload;
+console.log('payload', payload);
 next();
     } catch (error) {
         if (error instanceof JsonWebTokenError) {

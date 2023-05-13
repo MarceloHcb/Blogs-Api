@@ -18,7 +18,7 @@ const getUsers = async (_req, res) => {
 const getUserById = async (req, res) => {
 try {
     const { id } = req.params;
-    const user = await userService.getUserById(id);
+    const user = await userService.getUserById(id);    
     if (!user) return res.status(404).json({ message: 'User does not exist' });
     const { password: _password, ...userWithoutPassord } = user.dataValues;
     return res.status(200).json(userWithoutPassord);
@@ -30,7 +30,7 @@ const createUser = async (req, res) => {
     try {
         const { body } = req;
         const { type, message } = await userService.createUser(body);        
-        if (type) return res.status(errorMap.mapError(type)).json({ message });    
+        if (type) return res.status(errorMap.mapError(type)).json({ message });        
         const { password: _password, ...userWithoutPassord } = message.dataValues;              
         const validToken = createToken(userWithoutPassord);
         return res.status(201).json({ token: validToken });
