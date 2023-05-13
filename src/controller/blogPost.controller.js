@@ -35,8 +35,23 @@ const createBlogPost = async (req, res) => {
     }
 };
 
+const updateBlogPost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { body } = req;
+        const userId = req.payload.data.id;
+        const { type, message } = await blogPostService.updateBlogPost(id, body, userId);
+        if (type) return res.status(errorMap.mapError(type)).json({ message });   
+        return res.status(200).json(message);
+    } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'internal error' });
+    }
+};
+
 module.exports = {
     getBlogPosts,
     createBlogPost,
     getPostById,
+    updateBlogPost,
 };
