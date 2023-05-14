@@ -2,7 +2,6 @@ const { blogPostService } = require('../services');
 const errorMap = require('../utils/errorMap');
 
 const internalError = 'internal error';
-
 const confirmExistPost = (conditional, res) => {
     if (conditional) res.status(404).json({ message: 'Post does not exist' }); 
 };
@@ -43,9 +42,8 @@ const createBlogPost = async (req, res) => {
 const updateBlogPost = async (req, res) => {
     try {
         const { id } = req.params;
-        const { body } = req;
-        const userId = req.payload.data.id;
-        const { type, message } = await blogPostService.updateBlogPost(id, body, userId);
+        const { body } = req;        
+        const { type, message } = await blogPostService.updateBlogPost(id, body);
         if (type) return res.status(errorMap.mapError(type)).json({ message });   
         return res.status(200).json(message);
     } catch (error) {

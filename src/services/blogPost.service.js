@@ -36,7 +36,7 @@ const createBlogPost = async (userId, newPostBody) => {
     return { type: null, message: dataValues }; 
 };
 
-const updateBlogPost = async (id, newBody, userId) => { 
+const updateBlogPost = async (id, newBody) => { 
     const error = validatePostUpdate(newBody);        
         if (error.type) return error;   
     await BlogPost.update(newBody, { where: { id } });
@@ -47,7 +47,6 @@ const updateBlogPost = async (id, newBody, userId) => {
         ],
         attributes: { exclude: ['user_id'] },
         });    
-if (updatedPost.userId !== userId) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
     return { type: null, message: updatedPost };
 };
 

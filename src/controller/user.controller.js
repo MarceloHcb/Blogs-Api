@@ -40,8 +40,21 @@ const createUser = async (req, res) => {
     }
 };
 
+const deletedUser = async (req, res) => {
+    try {
+        const { id } = req.payload.data;        
+        const { type, message } = await userService.deleteUser(id);
+        if (type) return res.status(errorMap.mapError(type)).json({ message });        
+        return res.status(204).end();
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal error' });
+    }
+};
+
 module.exports = {
     getUsers,
     getUserById,
     createUser,
+    deletedUser,
 };
