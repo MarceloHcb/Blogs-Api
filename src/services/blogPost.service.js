@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { BlogPost, Category, PostCategory, User } = require('../models');
+const { BlogPost, Category, PostCategory, User, sequelize } = require('../models');
 const { validatePostFields, validatePostUpdate } = require('./validations/validateFilds');
 
 const getBlogPosts = () => BlogPost.findAll({
@@ -37,21 +37,23 @@ const getPostById = (id) => BlogPost.findByPk(id, {
     };
 
 const createBlogPost = async (userId, newPostBody) => {
-        const categories = await Category.findAll();                
-        const error = validatePostFields(newPostBody, categories);        
-        if (error.type) return error;
+    const categories = await Category.findAll();                
+    const error = validatePostFields(newPostBody, categories);        
+    if (error.type) return error;
+    const result = sequelize.transaction(async (t) => {
         const { dataValues } = await BlogPost
-        .create({ ...newPostBody, userId });  
-        
+        .create({ ...newPostBody, userId }, { transaction: t });        
         await Promise.all(
             newPostBody.categoryIds.map((id) => (
                 PostCategory.create(
                 { postId: dataValues.id, categoryId: id },
+                { transaction: t },
                 )
             )),
         );
-        
-    return { type: null, message: dataValues }; 
+        return dataValues;
+    });    
+    return { type: null, message: await result }; 
 };
 
 const updateBlogPost = async (id, newBody) => { 
