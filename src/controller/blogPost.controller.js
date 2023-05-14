@@ -27,6 +27,16 @@ const getPostById = async (req, res) => {
     }
 };
 
+const getPostsBySearch = async (req, res) => {
+try {
+    const { q } = req.query;
+    const searchedPosts = await blogPostService.getPostsBySearch(q);
+    return res.status(200).json(searchedPosts);
+} catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: internalError });
+}
+};
 const createBlogPost = async (req, res) => {    
     try {
         const { id } = req.payload.data;    
@@ -64,10 +74,12 @@ const deleteBlogPost = async (req, res) => {
         return res.status(500).json({ message: internalError });
     }
 };
+
 module.exports = {
     getBlogPosts,
     createBlogPost,
     getPostById,
     updateBlogPost,
     deleteBlogPost,
+    getPostsBySearch,
 };

@@ -6,6 +6,7 @@ const { userAutorization } = require('../middleware/userAutorization');
 const router = express.Router();
 
 router.get('/', validateJWT, blogPostController.getBlogPosts);
+router.get('/search', validateJWT, blogPostController.getPostsBySearch);
 router.get('/:id', validateJWT, blogPostController.getPostById);
 router.post('/', validateJWT, blogPostController.createBlogPost);
 router.put('/:id', validateJWT, userAutorization, blogPostController.updateBlogPost);

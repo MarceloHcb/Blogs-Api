@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { BlogPost, Category, PostCategory, User } = require('../models');
 const { validatePostFields, validatePostUpdate } = require('./validations/validateFilds');
 
@@ -17,6 +18,23 @@ const getPostById = (id) => BlogPost.findByPk(id, {
     ],
     attributes: { exclude: ['user_id'] },
     });
+
+    const getPostsBySearch = async (searchBody) => {        
+        const searchedPosts = await BlogPost.findAll({ 
+            include: [
+                { model: User, as: 'user', attributes: { exclude: ['password'] } },
+                { model: Category, as: 'categories' },
+            ],
+            attributes: { exclude: ['user_id'] },          
+            where: { 
+                [Op.or]: [
+                { title: { [Op.like]: `%${searchBody}%` } },
+                { content: { [Op.like]: `%${searchBody}%` } },
+                ],
+        },
+        });        
+        return searchedPosts;
+    };
 
 const createBlogPost = async (userId, newPostBody) => {
         const categories = await Category.findAll();                
@@ -59,5 +77,6 @@ module.exports = {
     getPostById,
     createBlogPost,
     updateBlogPost,
-    deleteBlogPost, 
+    deleteBlogPost,
+    getPostsBySearch,
 };
