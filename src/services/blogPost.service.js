@@ -1,7 +1,6 @@
 const { BlogPost, Category, PostCategory, User } = require('../models');
 const { validatePostFields, validatePostUpdate } = require('./validations/validateFilds');
 
-const userAutorization = (id) => BlogPost.findByPk(id);
 const getBlogPosts = () => BlogPost.findAll({
     include: [
     { model: User, as: 'user', attributes: { exclude: ['password'] } },
@@ -37,7 +36,7 @@ const createBlogPost = async (userId, newPostBody) => {
     return { type: null, message: dataValues }; 
 };
 
-const updateBlogPost = async (id, newBody) => { 
+const updateBlogPost = async (id, newBody, userId) => { 
     const error = validatePostUpdate(newBody);        
         if (error.type) return error;   
     await BlogPost.update(newBody, { where: { id } });
@@ -47,20 +46,19 @@ const updateBlogPost = async (id, newBody) => {
         { model: Category, as: 'categories' },
         ],
         attributes: { exclude: ['user_id'] },
-        });       
+        });    
+if (updatedPost.userId !== userId) return { type: 'UNAUTHORIZED', message: 'Unauthorized user' };
     return { type: null, message: updatedPost };
 };
 
 const deleteBlogPost = async (id) => {
 const deletedPost = await BlogPost.destroy({ where: { id } });
-return deletedPost;
+    return { type: null, message: deletedPost };
 };
-
 module.exports = { 
     getBlogPosts,
     getPostById,
     createBlogPost,
     updateBlogPost,
-    deleteBlogPost,
-    userAutorization,
+    deleteBlogPost, 
 };
