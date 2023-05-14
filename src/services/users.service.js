@@ -11,7 +11,9 @@ const getUserByEmail = async (email) => {
     });
     return userEmail;
 };
-const getUserById = (id) => User.findByPk(id);
+const getUserById = (id) => User.findByPk(id, {
+    attributes: { exclude: ['password'] },
+});
 const createUser = async (newUserbody) => {    
     const error = validateUserFields(newUserbody);
     const existingUser = await User.findOne({ where: { email: newUserbody.email } });    

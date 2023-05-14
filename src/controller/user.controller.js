@@ -4,12 +4,8 @@ const errorMap = require('../utils/errorMap');
 
 const getUsers = async (_req, res) => {
     try {
-    const users = await userService.getUsers();       
-    const results = users.map((result) => {
-    const { password, ...userWithoutPassword } = result.dataValues;
-    return userWithoutPassword;
-});
-    return res.status(200).json(results);
+    const users = await userService.getUsers();
+    return res.status(200).json(users);
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'internal error' });
@@ -19,9 +15,8 @@ const getUserById = async (req, res) => {
 try {
     const { id } = req.params;
     const user = await userService.getUserById(id);    
-    if (!user) return res.status(404).json({ message: 'User does not exist' });
-    const { password: _password, ...userWithoutPassord } = user.dataValues;
-    return res.status(200).json(userWithoutPassord);
+    if (!user) return res.status(404).json({ message: 'User does not exist' });    
+    return res.status(200).json(user);
 } catch (error) {
     console.error(error);
 } return res.status(500).json({ message: 'internal error' });
