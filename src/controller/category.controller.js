@@ -1,7 +1,7 @@
 const { categoryService } = require('../services');
 const errorMap = require('../utils/errorMap');
 
-const getCategories = async (req, res) => {
+const getCategories = async (_req, res) => {
     try {
         const categories = await categoryService.getCategories();        
         return res.status(200).json(categories);
